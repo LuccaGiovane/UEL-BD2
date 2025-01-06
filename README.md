@@ -22,8 +22,11 @@
     UEL-BD2/
     │
     ├── T1/
+    │   ├── CTE.sql
     │   ├── carrega_dados.sql
     │   ├── cria_tabelas.sql
+    │   ├── cria_visoes.sql
+    │   ├── window_functions.sql
     │   └── README.md
     │
     └── README.md
