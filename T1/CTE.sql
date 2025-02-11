@@ -72,7 +72,7 @@ PROMPT ========== CONSULTA RECURSIVA (WITH RECURSIVE) ==========
 --   naquele dia. 
 
 
-WITH RECURSIVE cte_calendario (dia, dia_fim) AS (
+WITH cte_calendario (dia, dia_fim) AS (
     -- 1) Âncora: pega a data mínima de dt_inicio e a data máxima de dt_inicio
     SELECT 
         TRUNC(MIN(a.dt_inicio)) AS dia,

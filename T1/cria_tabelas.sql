@@ -1,73 +1,5 @@
 -- -------------------------------------------------------------------------
--- 1) Tentar dropar todas as tabelas se existirem, na ordem inversa de criação
--- -------------------------------------------------------------------------
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.compra CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF; 
-     -- -942 = table or view does not exist
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.aluguel CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.nota_fiscal CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.generos_da_midia CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.idiomas_da_midia CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.midia CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.genero CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.idioma CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.usuario CASCADE CONSTRAINTS';
-EXCEPTION
-   WHEN OTHERS THEN
-     IF SQLCODE != -942 THEN RAISE; END IF;
-END;
-/
-
--- -------------------------------------------------------------------------
--- 2) Criação das tabelas no schema luccagomes
+-- Criação das tabelas no schema luccagomes
 -- -------------------------------------------------------------------------
 
 --------------------------------------------------------------------------
@@ -186,8 +118,8 @@ CREATE TABLE luccagomes.nota_fiscal (
 CREATE TABLE luccagomes.aluguel (
     usuario_id  NUMBER,
     midia_id    NUMBER,
-    dt_inicio   TIMESTAMP,
-    dt_expira   TIMESTAMP NOT NULL,
+    dt_inicio   TIMESTAMP DEFAULT SYSTIMESTAMP,
+    dt_expira   TIMESTAMP DEFAULT (SYSTIMESTAMP + INTERVAL '30' DAY) NOT NULL,
     valor       NUMBER(10,2) NOT NULL,
 
     CONSTRAINT pk_aluguel PRIMARY KEY (usuario_id, midia_id, dt_inicio),
@@ -215,4 +147,3 @@ CREATE TABLE luccagomes.compra (
         REFERENCES luccagomes.midia (id),
     CONSTRAINT ck_valor_compra_positivo CHECK (valor > 0)
 );
-

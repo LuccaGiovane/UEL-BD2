@@ -1,0 +1,67 @@
+-- -------------------------------------------------------------------------
+-- 1) Tentar dropar todas as tabelas se existirem, na ordem inversa de criação
+-- -------------------------------------------------------------------------
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.compra CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF; 
+     -- -942 = table or view does not exist
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.aluguel CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.nota_fiscal CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.generos_da_midia CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.idiomas_da_midia CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.midia CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.genero CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.idioma CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE luccagomes.usuario CASCADE CONSTRAINTS';
+EXCEPTION
+   WHEN OTHERS THEN
+     IF SQLCODE != -942 THEN RAISE; END IF;
+END;
+/

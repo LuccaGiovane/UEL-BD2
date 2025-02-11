@@ -61,14 +61,8 @@ SELECT id, titulo
  WHERE ROWNUM <= 5;  -- Exibe até as 5 primeiras mídias ativas
 
 
-PROMPT ========== CRIANDO/RECRIANDO MATERIALIZED VIEW ==========
+PROMPT ========== CRIANDO/RECRIANDO MATERIALIZED VIEW (SEM FILTRO) ==========
 
--- 2) Criando uma visão materializada que resume as compras por usuário.
---    Ela agrupa por usuario_id e soma o valor total. 
---    "REFRESH ON DEMAND" para atualizar manualmente via DBMS_MVIEW.REFRESH.
---    BUILD IMMEDIATE = cria e povoa a MV agora mesmo.
-
--- Antes de recriar, vamos garantir que a MV não exista:
 BEGIN
     EXECUTE IMMEDIATE 'DROP MATERIALIZED VIEW luccagomes.mv_compras_resumo';
 EXCEPTION
@@ -85,12 +79,13 @@ REFRESH ON DEMAND
 AS
 SELECT
     c.usuario_id,
-    COUNT(*)    AS total_compras,
+    COUNT(*)     AS total_compras,
     SUM(c.valor) AS valor_total
 FROM
     luccagomes.compra c
 GROUP BY
     c.usuario_id;
+
 
 
 PROMPT ========== EXEMPLO DE USO DA MATERIALIZED VIEW ==========

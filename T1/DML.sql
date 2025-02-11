@@ -1,7 +1,7 @@
 PROMPT ========== INÍCIO DOS TRIGGERS E TESTES (DML.sql) ==========
 
 -------------------------------------------------------------------------------
-PROMPT 1) CRIAÇÃO DO TRIGGER PARA AJUSTE AUTOMÁTICO DO VALOR DE COMPRA
+PROMPT ========== CRIAÇÃO DO TRIGGER PARA AJUSTE AUTOMÁTICO DO VALOR DE COMPRA ==========
 -------------------------------------------------------------------------------
 CREATE OR REPLACE TRIGGER luccagomes.trg_auto_valor_compra
 BEFORE INSERT ON luccagomes.compra
@@ -20,10 +20,10 @@ BEGIN
     END IF;
 END;
 /
-PROMPT ... Trigger luccagomes.trg_auto_valor_compra criado com sucesso.
+PROMPT Trigger luccagomes.trg_auto_valor_compra criado com sucesso.
 
 -------------------------------------------------------------------------------
-PROMPT 2) CRIAÇÃO DO TRIGGER QUE IMPEDE COMPRA DE MÍDIA INATIVA
+PROMPT ========== CRIAÇÃO DO TRIGGER QUE IMPEDE COMPRA DE MÍDIA INATIVA ==========
 -------------------------------------------------------------------------------
 CREATE OR REPLACE TRIGGER luccagomes.trg_check_midia_ativa_compra
 BEFORE INSERT OR UPDATE ON luccagomes.compra
@@ -44,24 +44,24 @@ BEGIN
     END IF;
 END;
 /
-PROMPT ... Trigger luccagomes.trg_check_midia_ativa_compra criado com sucesso.
+PROMPT Trigger luccagomes.trg_check_midia_ativa_compra criado com sucesso.
 
 -------------------------------------------------------------------------------
-PROMPT 3) INSERINDO DADOS BÁSICOS PARA TESTE
+PROMPT ========== INSERINDO DADOS BÁSICOS PARA TESTE ==========
 -------------------------------------------------------------------------------
 
-PROMPT 3.1) Inserindo um usuário (ID gerado pelo IDENTITY):
+PROMPT Inserindo um usuário (ID gerado pelo IDENTITY):
 -- Se 'fulano_login' ou 'fulano_login2' já existirem, mude o valor do login novamente.
 INSERT INTO luccagomes.usuario (nome, login, senha, nasc)
-VALUES ('fulano37', 'fulano_login37', '1234', DATE '1990-01-01');
+VALUES ('teste38', 'login_38', '1234', DATE '1990-01-01');
 /
 
-PROMPT 3.2) Inserindo uma mídia (ID gerado pelo IDENTITY):
+PROMPT Inserindo uma mídia (ID gerado pelo IDENTITY):
 INSERT INTO luccagomes.midia (titulo, dt_lancamento, valor, duracao)
 VALUES ('Filme Ativo', DATE '2020-01-01', 50.00, 120);
 /
 
-PROMPT 3.3) Criando uma nota_fiscal para esse usuário (valor_total=0):
+PROMPT Criando uma nota_fiscal para esse usuário (valor_total=0):
 -- dt_pagamento = SYSTIMESTAMP por default (PRIMARY KEY = (usuario_id, dt_pagamento))
 INSERT INTO luccagomes.nota_fiscal (usuario_id, valor_total)
 SELECT u.id, 0
@@ -73,16 +73,16 @@ SELECT u.id, 0
  WHERE ROWNUM = 1;
 /
 
-PROMPT 3.4) Consultar os dados recém inseridos:
+PROMPT Consultar os dados recém inseridos:
 SELECT * FROM luccagomes.usuario;
 SELECT * FROM luccagomes.midia;
 SELECT * FROM luccagomes.nota_fiscal;
 
 -------------------------------------------------------------------------------
-PROMPT 4) TESTES DOS TRIGGERS
+PROMPT ========== TESTES DOS TRIGGERS ==========
 -------------------------------------------------------------------------------
 
-PROMPT 4.1) Tentando comprar com mídia ativa (deve funcionar):
+PROMPT Tentando comprar com mídia ativa (deve funcionar):
 INSERT INTO luccagomes.compra (usuario_id, midia_id, dt_compra, valor)
 SELECT
     (SELECT id 
@@ -106,7 +106,7 @@ SELECT *
   FROM luccagomes.compra
  ORDER BY dt_compra DESC;
 
-PROMPT 4.2) Tornar a mídia inativa e tentar comprar de novo (deve falhar):
+PROMPT Tornar a mídia inativa e tentar comprar de novo (deve falhar):
 UPDATE luccagomes.midia
    SET ativo = 'N'
  WHERE id = (
@@ -135,6 +135,6 @@ SELECT
 FROM DUAL;
 /
 
-PROMPT ... Espera-se erro ORA-20001: ERRO: Não é possível comprar mídia inativa.
+PROMPT Espera-se erro ORA-20001: ERRO: Não é possível comprar mídia inativa.
 
 PROMPT ========== FIM DOS TRIGGERS E TESTES ==========

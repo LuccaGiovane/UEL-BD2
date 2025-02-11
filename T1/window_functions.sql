@@ -1,5 +1,4 @@
 PROMPT ========== CONSULTA 1: RANKING DE MÍDIAS MAIS COMPRADAS ==========
-
 SELECT
     midia_id,
     total_por_midia,
@@ -7,31 +6,29 @@ SELECT
 FROM (
     SELECT
         c.midia_id,
-        SUM(c.valor) OVER (PARTITION BY c.midia_id) AS total_por_midia
+        SUM(c.valor) AS total_por_midia
     FROM
         luccagomes.compra c
+    GROUP BY
+        c.midia_id
 )
 ORDER BY
     rank_por_valor;
-
+    
 
 PROMPT ========== CONSULTA 2: DIFERENÇA ENTRE COMPRAS CONSECUTIVAS ==========
 
 SELECT
-    c.usuario_id,
-    c.dt_compra,
-    LAG(c.dt_compra) OVER (
-        PARTITION BY c.usuario_id
-        ORDER BY c.dt_compra
-    ) AS compra_anterior,
-    (c.dt_compra - LAG(c.dt_compra) OVER (
-        PARTITION BY c.usuario_id
-        ORDER BY c.dt_compra
-    )) AS dias_entre_compras
+    usuario_id,
+    TO_CHAR(dt_compra, 'DD/MM/YYYY HH24:MI:SS') AS dt_compra,
+    SUM(valor) AS total_compra,
+    RANK() OVER (ORDER BY SUM(valor) DESC) AS rank_global
 FROM
-    luccagomes.compra c
+    luccagomes.compra
+GROUP BY
+    usuario_id,
+    dt_compra
 ORDER BY
-    c.usuario_id,
-    c.dt_compra;
+    rank_global;
 
 PROMPT ========== FIM DO SCRIPT DE WINDOW FUNCTIONS ==========
