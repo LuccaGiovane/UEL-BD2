@@ -16,7 +16,7 @@ ORDER BY
     rank_por_valor;
     
 
-PROMPT ========== CONSULTA 2: DIFERENÇA ENTRE COMPRAS CONSECUTIVAS ==========
+PROMPT ========== CONSULTA 2: RANKING DE COMPRAS POR VALOR TOTAL (AGRUPADO POR USUARIO E DATA) ==========
 
 SELECT
     usuario_id,
